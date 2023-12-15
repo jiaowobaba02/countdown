@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
 
     // 创建倒计时标签
     countdownLabel = gtk_label_new(NULL);
-    PangoFontDescription *fontDesc = pango_font_description_from_string("SimHei 40");
+    PangoFontDescription *fontDesc = pango_font_description_from_string("SimHei 48");
     gtk_widget_modify_font(countdownLabel, fontDesc);
     pango_font_description_free(fontDesc);
     gtk_label_set_xalign(GTK_LABEL(countdownLabel), 0.5);
@@ -99,7 +99,7 @@ int main(int argc, char *argv[]) {
     GtkCssProvider *cssProvider = gtk_css_provider_new();
     gtk_css_provider_load_from_data(cssProvider,
         "window {"
-        "   background-color: rgba(192, 192, 192, 0.5);"
+        "   background-color: rgba(255, 255, 255, 0.5);"
         "  background-image: none;"
         "   border-width: 0;"
         "   box-shadow: none;"
