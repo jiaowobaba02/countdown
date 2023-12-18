@@ -44,9 +44,9 @@ void updateCountdown() {
     // 格式化倒计时文本
     char countdownText[100];
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(showTimeCheckbox))) {
-        sprintf(countdownText, "距离中考还有\n%d天 %d小时 %d分钟 %d秒", days, hours, minutes, seconds);
+        sprintf(countdownText, "%d天 %d小时 %d分钟 %d秒", days, hours, minutes, seconds);
     } else {
-        sprintf(countdownText, "距离中考还有\n%d天", days);
+        sprintf(countdownText, "%d天", days+1);
     }
 
     // 更新倒计时标签
@@ -72,11 +72,13 @@ int main(int argc, char *argv[]) {
 
     // 隐藏标题栏的关闭按钮
     gtk_window_set_decorated(GTK_WINDOW(window), FALSE);
+    GtkWidget *text = gtk_label_new("距离中考还有");
 
     // 创建倒计时标签
     countdownLabel = gtk_label_new(NULL);
     PangoFontDescription *fontDesc = pango_font_description_from_string("SimHei 48");
     gtk_widget_modify_font(countdownLabel, fontDesc);
+    gtk_widget_modify_font(text, fontDesc);
     pango_font_description_free(fontDesc);
     gtk_label_set_xalign(GTK_LABEL(countdownLabel), 0.5);
     gtk_label_set_yalign(GTK_LABEL(countdownLabel), 0.5);
@@ -91,7 +93,9 @@ int main(int argc, char *argv[]) {
 
     // 将倒计时标签和复选框添加到窗口
     GtkWidget *vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+    gtk_container_add(GTK_CONTAINER(text), vbox);
     gtk_container_add(GTK_CONTAINER(window), vbox);
+    gtk_box_pack_start(GTK_BOX(vbox), text, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), countdownLabel, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), showTimeCheckbox, TRUE, TRUE, 0);
 
@@ -105,9 +109,11 @@ int main(int argc, char *argv[]) {
         "   box-shadow: none;"
         "   margin: 0;"
         "   padding: 0;"
+
         "}"
         "checkbutton {"
         "   margin-left: 20px;"
+          
         "}",
         -1, NULL);
     GtkStyleContext *styleContext = gtk_widget_get_style_context(window);
