@@ -3,20 +3,25 @@
 
 GtkWidget *countdownLabel;
 GtkWidget *showTimeCheckbox;
-int targetYear = 2024;
-int targetMonth = 6;
-int targetDay = 25;
-int targetHour = 0;
-int targetMinute = 0;
-int targetSecond = 0;
 
 void updateCountdown() {
     // 获取当前时间
     time_t currentTime = time(NULL);
     struct tm *currentDate = localtime(&currentTime);
 
+    // 自动设置目标年份
+    int targetYear = currentDate->tm_year + 1900;
+    if (currentDate->tm_mon > 5 || (currentDate->tm_mon == 5 && currentDate->tm_mday > 25)) {
+        targetYear++;
+    }
+    int targetMonth = 6;
+    int targetDay = 25;
+    int targetHour = 0;
+    int targetMinute = 0;
+    int targetSecond = 0;
+
     // 设置目标时间
-    struct tm targetDate;
+    struct tm targetDate = {0};
     targetDate.tm_year = targetYear - 1900;
     targetDate.tm_mon = targetMonth - 1;
     targetDate.tm_mday = targetDay;
@@ -26,9 +31,8 @@ void updateCountdown() {
     targetDate.tm_isdst = -1;
 
     // 计算时间差
-    time_t currentTimeInSeconds = mktime(currentDate);
-    time_t targetTimeInSeconds = mktime((struct tm *)&targetDate);
-    time_t timeDifference = targetTimeInSeconds - currentTimeInSeconds;
+    time_t targetTimeInSeconds = mktime(&targetDate);
+    time_t timeDifference = targetTimeInSeconds - currentTime;
 
     // 转换为天、小时、分钟和秒
     int days, hours, minutes, seconds;
